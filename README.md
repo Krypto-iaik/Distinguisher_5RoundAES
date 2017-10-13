@@ -14,9 +14,9 @@ Key-Recovery Attacks and Secret-Key Distinguishers on AES:
 
 4a) AES_5RoundDistinguisher_setS.c
 
-4b) AES_5RoundDistinguisher_setT.c
+4b) AES_5RoundDistinguisher_setT_AppC.c
 
-4c) AES_5RoundDistinguisher_setZ.c
+4c) AES_5RoundDistinguisher_setT_AppD.c
 
 The programs should run with almost C-compilers (we have used gcc version 4.8.1). None of these programs is speed-optimized, they are for verification purposes only.
 
@@ -52,15 +52,16 @@ The details of the procedure of the attack can be found in App. C - Algorithm 4.
 The secret key can be chosen in the main function. The number of tests (or equivalent of ciphertexts that collide) can be chosen by the parameter N_TestTest (line 8) - we suggest to choose NUMBER_TEST >=8 to discard all the wrong keys with probability higher than 95%.
 Time of execution: 0.25 sec.
 
-4) "AES_5RoundDistinguisher_setS.c", "AES_5RoundDistinguisher_setT.c" and "AES_5RoundDistinguisher_setZ.c" verifies the probabilities given in Sect. 6 and App. D.3 on small-scale AES and exploited by our 5-round AES secret-key distinguisher.
+4) "AES_5RoundDistinguisher_setS.c", "AES_5RoundDistinguisher_setT_AppC.c and AES_5RoundDistinguisher_setT_AppD.c" verify the probabilities given in Sect. 6 and App. C-D on small-scale AES and exploited by our 5-round AES secret-key distinguisher.
 As before, given plaintexts in the same coset of a column space, one divides all the possible couples in set as defined in the paper.
 The program computes the average probability that for a given set there exists J with |J|=3 such that for at least one couple in the set the two ciphertexts belong to the same coset of M_J.
 For all the three cases, this probability is a little lower for AES than for a random permutation: this fact is exploited by the distinguisher.
 We emphasize that since the theory on which this distinguisher is based is independent of the fact that the words are of 4 or 8 bits, our verification on small-scale AES is strong evidence for it to hold for real AES.
 The program can also be used as distinguisher.
 
-Time of execution: set S > 1 month (on a normal PC) - set T and/or Z > 2 weeks (on a normal PC). 
+Time of execution: set T (App. C) and/or S: > 2 weeks (on a normal PC) - set T (app. D): > 1 month (on a normal PC).  
 Due to the long time of execution, we refer to the paper for a discussion about the practical obtained results.
 (In order to improve the speed, we store all the results/output of the program in .txt files.)
 
 Finally, the pseudo-random generator used in these programs is the "Mersenne Twister" one, developed by 1997 by Makoto Matsumoto and Takuji Nishimura - MT19937. The complete source code and explanation of this random generator can be found in: http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
+
