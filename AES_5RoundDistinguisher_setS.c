@@ -775,7 +775,7 @@ In the following, we simply test these values for small-scale AES and we compare
 A complete discussion on this topic can be found in Sect. 6.
  */
 
-//TIME of EXECUTION: 1 month on normal PC
+//TIME of EXECUTION: 2 weeks on normal PC
 
 int main()
 {
@@ -792,9 +792,9 @@ int main()
 
     double res1, res2, tot1 = 0., tot2 = 0., average1, average2;
 
-    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using set Z.\n\n");
+    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using set S.\n\n");
     printf("The program verifies the probabilities given in Sect. 6 both for a random permutation and for a small-scale AES.\n");
-    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC). In Sect. 6 - App. D we present a complete discussion about some practical results of execution of this program.\n\n");
+    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC).\n\n");
 
     fpAES = fopen("NumberSets_5AES_2.txt","w+");
     fpRAND = fopen("NumberSets_5RAND_2.txt","w+");
