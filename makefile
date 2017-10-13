@@ -1,6 +1,6 @@
 CFLAGS=-O3 -Wall
 
-all: AES AES_smallScale AES_4RoundDistinguisher AES_4RoundDistinguisher_SmallScale AES_5RoundAttack_SmallScale AES_5RoundDistinguisher_setS AES_5RoundDistinguisher_setT AES_5RoundDistinguisher_setZ
+all: AES AES_smallScale AES_4RoundDistinguisher AES_4RoundDistinguisher_SmallScale AES_5RoundAttack_SmallScale AES_5RoundDistinguisher_setS AES_5RoundDistinguisher_setT_AppC AES_5RoundDistinguisher_setT_AppD
 
 multiplication: multiplication.h multiplication.c multiplication_smallScale.c
 	$(CC) $(CFLAGS) -c -o multiplication.o multiplication.c
@@ -32,11 +32,11 @@ AES_5RoundAttack_SmallScale: aes_common multiplication subspace_checks AES_5Roun
 AES_5RoundDistinguisher_setS: aes_common multiplication subspace_checks AES_5RoundDistinguisher_setS.c
 	$(CC) $(CFLAGS) -o AES_5RoundDistinguisher_setS AES_5RoundDistinguisher_setS.c AES_common5.o subspace_checks.o multiplication_smallScale.o
 
-AES_5RoundDistinguisher_setT: aes_common multiplication subspace_checks AES_5RoundDistinguisher_setT.c
-	$(CC) $(CFLAGS) -o AES_5RoundDistinguisher_setT AES_5RoundDistinguisher_setT.c AES_common5.o subspace_checks.o multiplication_smallScale.o
+AES_5RoundDistinguisher_setT_AppC: aes_common multiplication subspace_checks AES_5RoundDistinguisher_setT_AppC.c
+	$(CC) $(CFLAGS) -o AES_5RoundDistinguisher_setT_AppC AES_5RoundDistinguisher_setT_AppC.c AES_common5.o subspace_checks.o multiplication_smallScale.o
 
-AES_5RoundDistinguisher_setZ: aes_common multiplication subspace_checks AES_5RoundDistinguisher_setZ.c
-	$(CC) $(CFLAGS) -o AES_5RoundDistinguisher_setZ AES_5RoundDistinguisher_setZ.c AES_common5.o subspace_checks.o multiplication_smallScale.o
+AES_5RoundDistinguisher_setT_AppD: aes_common multiplication subspace_checks AES_5RoundDistinguisher_setT_AppD.c
+	$(CC) $(CFLAGS) -o AES_5RoundDistinguisher_setT_AppD AES_5RoundDistinguisher_setT_AppD.c AES_common5.o subspace_checks.o multiplication_smallScale.o
 
 clean:
 	$(RM) -f AES_common10.o AES_common4.o AES_common5.o 
@@ -47,7 +47,7 @@ clean:
 	$(RM) -f AES_4RoundDistinguisher_SmallScale
 	$(RM) -f AES_5RoundAttack_SmallScale
 	$(RM) -f AES_5RoundDistinguisher_setS
-	$(RM) -f AES_5RoundDistinguisher_setT
-	$(RM) -f AES_5RoundDistinguisher_setZ
+	$(RM) -f AES_5RoundDistinguisher_setT_AppC
+	$(RM) -f AES_5RoundDistinguisher_setT_AppD
 	
 .PHONY: clean
