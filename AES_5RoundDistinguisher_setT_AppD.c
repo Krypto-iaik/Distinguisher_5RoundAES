@@ -633,7 +633,7 @@ with |J|=3 such that for at least one couple the two ciphertexts belong to the s
 AES than for a random permutation.
 The exact values of these two probabilities are given in the text.
 In the following, we simply test these values for small-scale AES and we compare the practical results with the theoreotical ones.
-A complete discussion on this topic can be found in Sect. 6.
+A complete discussion on this topic can be found in App. D - Sect. 6.
  */
 
 //TIME of EXECUTION: 1 month on normal PC
@@ -655,7 +655,7 @@ int main()
 
     printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using set T (App. D).\n\n");
     printf("The program verifies the probabilities given in App. D both for a random permutation and for a small-scale AES.\n");
-    printf("The time of execution of the program is quite long (approximately 1 month on a normal PC). In Sect. 6 we present a complete discussion about some practical results of execution of this program.\n\n");
+    printf("The time of execution of the program is quite long (approximately 1 month on a normal PC).\n\n");
 
     fpAES = fopen("NumberSets_5AES.txt","w+");
     fpRAND = fopen("NumberSets_5RAND.txt","w+");
