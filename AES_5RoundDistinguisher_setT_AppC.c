@@ -719,16 +719,16 @@ double subspaceTest(word8 key[][4], int modeOfOperation)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**The 5-round secret key distinguisher of Sect. 6 is based on the following fact.
+/**The 5-round secret key distinguisher of App. C is based on the following fact.
 Given all the couples, one divides them is sets. Given a set, it is possible to prove that the probability that there exists J
 with |J|=3 such that for at least one couple the two ciphertexts belong to the same coset of M_J is (a little) lower for 5-round
 AES than for a random permutation.
 The exact values of these two probabilities are given in the text.
 In the following, we simply test these values for small-scale AES and we compare the practical results with the theoreotical ones.
-A complete discussion on this topic can be found in Sect. 6.
+A complete discussion on this topic can be found in App. C - Sect. 6.
  */
 
-//TIME of EXECUTION: 1 month on normal PC
+//TIME of EXECUTION: 2 weeks on normal PC
 
 int main()
 {
@@ -745,9 +745,9 @@ int main()
 
     double res1, res2, tot1 = 0., tot2 = 0., average1, average2;
 
-    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using T set.\n\n");
-    printf("The program verifies the probabilities given in Sect. 6 both for a random permutation and for a small-scale AES.\n");
-    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC). In Sect. 6 - App. D we present a complete discussion about some practical results of execution of this program.\n\n");
+    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using T set (App. C).\n\n");
+    printf("The program verifies the probabilities given in App. C both for a random permutation and for a small-scale AES.\n");
+    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC).\n\n");
 
     fpAES = fopen("NumberSets_5AES.txt","w+");
     fpRAND = fopen("NumberSets_5RAND.txt","w+");
