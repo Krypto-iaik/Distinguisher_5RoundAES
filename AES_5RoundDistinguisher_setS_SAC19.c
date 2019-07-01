@@ -47,9 +47,9 @@ We also attach the following:
 
 #define NUMBER_CP 65536
 //number of cosets for each test
-#define N_TEST 4
+#define N_TEST 1
 //number of test
-#define numerbPROVE 28256
+#define numerbPROVE 65536
 /**The results of the program are stored in .txt file.
 The actual number of tests = initial cosets analyzed is: numerbPROVE * N_TEST
 The results of the program are stored only when the number of tests is a multiple of N_TEST, that is for N_TEST = 256, after 256, 512, 768, 1024, ... tests*/
@@ -321,288 +321,6 @@ void randEncryption(word8 temp[][4], word8 key[][4], word8* c1)
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int leseq(word8 a[], word8 b[], word8 c[], word8 d[], int coset)
-{
-    int flag, i;
-
-    flag = 1;
-
-    for(i = 0; i<16; i++)
-    {
-        if(d[i] != b[i])
-        {
-            flag = 0;
-        }
-    }
-
-    if(flag == 1)
-       return lessOrEqual(a, c, coset);
-
-    return lessOrEqual(b, d, coset);
-}
-
-/**Strategy not to count the same set more than a single time.
-All the details can be found in the text - see Algorithm 2 for details.*/
-double superTest(int indice1, int indice2, int coset)
-{
-    int set1[512], set2[512], index, i, p1[4], p2[4], j, k, l, indiceSet, flag, conttt, conttt2;
-    word8 test[4][4], c1[512][16], c2[512][16], ccc1[16], ccc2[16], ccc3[16], ccc4[16], temp;
-
-    for(i = 0; i<4; i++)
-    {
-        p1[i] = (int) play[indice1][i];
-        p2[i] = (int) play[indice2][i];
-    }
-
-    if((p1[0] == p2[0])&&(p1[1] == p2[1]))
-    {
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-            for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[0] == conttt)&&(p1[1] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-
-                //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = p1[3] + 16 * p1[2] + 256 * conttt2 + 4096 * conttt;
-                set2[0 + 2*conttt + 32*conttt2] = p2[3] + 16 * p2[2] + 256 * conttt2 + 4096 * conttt;
-
-                set1[1 + 2*conttt + 32*conttt2] = p2[3] + 16 * p1[2] + 256 * conttt2 + 4096 * conttt;
-                set2[1 + 2*conttt + 32*conttt2] = p1[3] + 16 * p2[2] + 256 * conttt2 + 4096 * conttt;
-
-            }
-        }
-    }
-
-    if((p1[0] == p2[0])&&(p1[2] == p2[2]))
-    {
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-
-            for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[0] == conttt)&&(p1[2] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-
-                //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = p1[3] + 16 * conttt2 + 256 * p1[1] + 4096 * conttt;
-                set2[0 + 2*conttt + 32*conttt2] = p2[3] + 16 * conttt2 + 256 * p2[1] + 4096 * conttt;
-
-                set1[1 + 2*conttt + 32*conttt2] = p2[3] + 16 * conttt2 + 256 * p1[1] + 4096 * conttt;
-                set2[1 + 2*conttt + 32*conttt2] = p1[3] + 16 * conttt2 + 256 * p2[1] + 4096 * conttt;
-
-            }
-        }
-    }
-
-    if((p1[0] == p2[0])&&(p1[3] == p2[3]))
-    {
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-
-            for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[0] == conttt)&&(p1[3] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-
-               //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * p1[2] + 256 * p1[1] + 4096 * conttt;
-                set2[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * p2[2] + 256 * p2[1] + 4096 * conttt;
-
-                set1[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * p2[2] + 256 * p1[1] + 4096 * conttt;
-                set2[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * p1[2] + 256 * p2[1] + 4096 * conttt;
-            }
-        }
-    }
-
-    if((p1[1] == p2[1])&&(p1[2] == p2[2]))
-    {
-
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-
-            for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[1] == conttt)&&(p1[2] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-
-                //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = p1[3] + 16 * conttt2 + 256 * conttt + 4096 * p1[0];
-                set2[0 + 2*conttt + 32*conttt2] = p2[3] + 16 * conttt2 + 256 * conttt + 4096 * p2[0];
-
-                set1[1 + 2*conttt + 32*conttt2] = p2[3] + 16 * conttt2 + 256 * conttt + 4096 * p1[0];
-                set2[1 + 2*conttt + 32*conttt2] = p1[3] + 16 * conttt2 + 256 * conttt + 4096 * p2[0];
-
-            }
-        }
-    }
-
-    if((p1[1] == p2[1])&&(p1[3] == p2[3]))
-    {
-
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-
-           for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[1] == conttt)&&(p1[3] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-
-                //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * p1[2] + 256 * conttt + 4096 * p1[0];
-                set2[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * p2[2] + 256 * conttt + 4096 * p2[0];
-
-                set1[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * p2[2] + 256 * conttt + 4096 * p1[0];
-                set2[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * p1[2] + 256 * conttt + 4096 * p2[0];
-            }
-        }
-    }
-
-    if((p1[2] == p2[2])&&(p1[3] == p2[3]))
-    {
-
-        for(conttt = 0; conttt < 16; conttt++)
-        {
-
-           for(conttt2 = 0; conttt2 < 16; conttt2++)
-            {
-                if((p1[2] == conttt)&&(p1[3] == conttt2))
-                {
-                    indiceSet = 2*conttt + 32*conttt2;
-                }
-                 //create the set S
-                set1[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * conttt + 256 * p1[1] + 4096 * p1[0];
-                set2[0 + 2*conttt + 32*conttt2] = conttt2 + 16 * conttt + 256 * p2[1] + 4096 * p2[0];
-
-                set1[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * conttt + 256 * p2[1] + 4096 * p1[0];
-                set2[1 + 2*conttt + 32*conttt2] = conttt2 + 16 * conttt + 256 * p1[1] + 4096 * p2[0];
-            }
-        }
-    }
-
-
-    for(index = coset + 1; index < 4; index++)
-    {
-        for(i = 0; i<512; i++)
-        {
-            for(k = 0; k<4; k++)
-            {
-                for(l = 0; l<4; l++)
-                {
-                    test[k][l] = initialCipher[set1[i]][k + l*4] ^ initialCipher[set2[i]][k + l*4];
-                }
-            }
-            if(belongToW_2(test, index) == 1)
-                return 0.;
-        }
-    }
-
-    for(i=0;i<512;i++)
-    {
-        for(j=0;j<16;j++)
-        {
-            c1[i][j] = initialCipher[set1[i]][j];
-            c2[i][j] = initialCipher[set2[i]][j];
-        }
-    }
-
-    //DA QUI IN POI E DA MODIFICARE!!!!
-
-        //FIRST YOU HAVE TO RE-ORDER THE INDEX!!!!!
-        for(i=0;i<512;i++)
-        {
-            for(j=0;j<16;j++)
-            {
-                ccc1[j] = c1[i][j];
-                ccc2[j] = c2[i][j];
-            }
-            if(lessOrEqual(ccc1, ccc2, coset) == 1)
-            {
-                for(j=0;j<16;j++)
-                {
-                    temp = c1[i][j];
-                    c1[i][j] = c2[i][j];
-                    c2[i][j] = temp;
-                }
-            }
-        }
-
-        for(i=0; i<512; i++)
-        {
-            for(j=i+1; j<512; j++)
-            {
-                for(k=0;k<16;k++)
-                {
-                    ccc1[k] = c1[i][k];
-                    ccc2[k] = c2[i][k];
-                    ccc3[k] = c1[j][k];
-                    ccc4[k] = c2[j][k];
-                }
-                flag  = leseq(ccc1, ccc2, ccc3, ccc4, coset);
-                if(flag == 1)
-                {
-                    for(k=0;k<16;k++)
-                    {
-                        temp = c1[i][k];
-                        c1[i][k] = c1[j][k];
-                        c1[j][k] = temp;
-                        temp = c2[i][k];
-                        c2[i][k] = c2[j][k];
-                        c2[j][k] = temp;
-                    }
-                }
-            }
-        }
-
-        for(i = 0; i<512; i++)
-        {
-            flag = 0;
-
-            for(k=0;k<16;k++)
-            {
-                if((c1[i][k] != initialCipher[set1[indiceSet]][k] )||(c2[i][k] != initialCipher[set2[indiceSet]][k]))
-                {
-                    flag = 1;
-                }
-            }
-
-            if(flag == 0)
-            {
-                indiceSet = i;
-                break;
-            }
-        }
-
-
-        //test on the sets for the same J
-        for(i = indiceSet + 1; i<512; i++)
-        {
-            for(k = 0; k<4; k++)
-            {
-                for(l = 0; l<4; l++)
-                {
-                    test[k][l] = c1[i][k + l*4] ^ c2[i][k + l*4];
-                }
-            }
-            if(belongToW_2(test, coset) == 1)
-                return 0.;
-        }
-
-    return 1.;
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**Count number of sets that satisfy the required property.
@@ -614,11 +332,24 @@ double subspaceTest(word8 key[][4], int modeOfOperation)
     unsigned long int i, j;
     int l, k, indice1, indice2, indice3, indice4, coset, num_Coset, flag = 0;
 
+    int v0[14400], v1[14400], v2[14400], v3[14400], v4[14400], v5[14400];
+    int a, b, c, d, e;
+
     double numberTableLook = 0.0, finalRes = 0.0, esito;
 
     word8 p1[4][4], c1[4][4], temp[4][4];
 
     finalRes = 0.0;
+
+    for(i = 0; i < 14400; i++)
+    {
+        v0[i] = 0;
+        v1[i] = 0;
+        v2[i] = 0;
+        v3[i] = 0;
+        v4[i] = 0;
+        v5[i] = 0;
+    }
 
     for(num_Coset = 0; num_Coset < N_TEST; num_Coset++)
     {
@@ -719,33 +450,192 @@ double subspaceTest(word8 key[][4], int modeOfOperation)
                         {
                             if((play[l][0]==play[k][0])&&(play[l][1]==play[k][1])&&(play[l][2]!=play[k][2])&&(play[l][3]!=play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][2] < play[k][2])
+                                {
+                                    a = (int) play[l][2];
+                                    b = (int) play[k][2];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][2];
+                                    a = (int) play[k][2];
+                                }
+                                if(play[l][3] < play[k][3])
+                                {
+                                    c = (int) play[l][3];
+                                    d = (int) play[k][3];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][3];
+                                    c = (int) play[k][3];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v0[e] == 0)
+                                    finalRes += 1.;
+
+                                v0[e] = 1;
+
+                                /*esito = superTest(l, k, coset);
+                                finalRes += esito;*/
                             }
                             if((play[l][0]==play[k][0])&&(play[l][1]!=play[k][1])&&(play[l][2]==play[k][2])&&(play[l][3]!=play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][1] < play[k][1])
+                                {
+                                    a = (int) play[l][1];
+                                    b = (int) play[k][1];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][1];
+                                    a = (int) play[k][1];
+                                }
+                                if(play[l][3] < play[k][3])
+                                {
+                                    c = (int) play[l][3];
+                                    d = (int) play[k][3];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][3];
+                                    c = (int) play[k][3];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v1[e] == 0)
+                                    finalRes += 1.;
+
+                                v1[e] = 1;
                             }
                             if((play[l][0]==play[k][0])&&(play[l][1]!=play[k][1])&&(play[l][2]!=play[k][2])&&(play[l][3]==play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][1] < play[k][1])
+                                {
+                                    a = (int) play[l][1];
+                                    b = (int) play[k][1];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][1];
+                                    a = (int) play[k][1];
+                                }
+                                if(play[l][2] < play[k][2])
+                                {
+                                    c = (int) play[l][2];
+                                    d = (int) play[k][2];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][2];
+                                    c = (int) play[k][2];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v2[e] == 0)
+                                    finalRes += 1.;
+
+                                v2[e] = 1;
                             }
                             if((play[l][0]!=play[k][0])&&(play[l][1]==play[k][1])&&(play[l][2]==play[k][2])&&(play[l][3]!=play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][0] < play[k][0])
+                                {
+                                    a = (int) play[l][0];
+                                    b = (int) play[k][0];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][0];
+                                    a = (int) play[k][0];
+                                }
+                                if(play[l][3] < play[k][3])
+                                {
+                                    c = (int) play[l][3];
+                                    d = (int) play[k][3];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][3];
+                                    c = (int) play[k][3];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v3[e] == 0)
+                                    finalRes += 1.;
+
+                                v3[e] = 1;
                             }
                             if((play[l][0]!=play[k][0])&&(play[l][1]==play[k][1])&&(play[l][2]!=play[k][2])&&(play[l][3]==play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][0] < play[k][0])
+                                {
+                                    a = (int) play[l][0];
+                                    b = (int) play[k][0];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][0];
+                                    a = (int) play[k][0];
+                                }
+                                if(play[l][2] < play[k][2])
+                                {
+                                    c = (int) play[l][2];
+                                    d = (int) play[k][2];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][2];
+                                    c = (int) play[k][2];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v4[e] == 0)
+                                    finalRes += 1.;
+
+                                v4[e] = 1;
                             }
                             if((play[l][0]!=play[k][0])&&(play[l][1]!=play[k][1])&&(play[l][2]==play[k][2])&&(play[l][3]==play[k][3]))
                             {
-                                esito = superTest(l, k, coset);
-                                finalRes += esito;
+                                if(play[l][0] < play[k][0])
+                                {
+                                    a = (int) play[l][0];
+                                    b = (int) play[k][0];
+                                }
+                                else
+                                {
+                                    b = (int) play[l][0];
+                                    a = (int) play[k][0];
+                                }
+                                if(play[l][1] < play[k][1])
+                                {
+                                    c = (int) play[l][1];
+                                    d = (int) play[k][1];
+                                }
+                                else
+                                {
+                                    d = (int) play[l][1];
+                                    c = (int) play[k][1];
+                                }
+
+                                e = a + b * (b-1)/2;
+                                e += 120 * (c + d*(d-1)/2);
+
+                                if(v5[e] == 0)
+                                    finalRes += 1.;
+
+                                v5[e] = 1;
                             }
                         }
                     }
@@ -775,7 +665,7 @@ In the following, we simply test these values for small-scale AES and we compare
 A complete discussion on this topic can be found in Sect. 6.
  */
 
-//TIME of EXECUTION: 2 weeks on normal PC
+//TIME of EXECUTION: 1 month on normal PC
 
 int main()
 {
@@ -792,9 +682,9 @@ int main()
 
     double res1, res2, tot1 = 0., tot2 = 0., average1, average2;
 
-    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using set S.\n\n");
+    printf("VERIFICATION OF PROBABILITIES for 5-round secret-key distinguisher AES (small scale) using set Z.\n\n");
     printf("The program verifies the probabilities given in Sect. 6 both for a random permutation and for a small-scale AES.\n");
-    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC).\n\n");
+    printf("The time of execution of the program is quite long (approximately 2 weeks on a normal PC). In Sect. 6 - App. D we present a complete discussion about some practical results of execution of this program.\n\n");
 
     fpAES = fopen("NumberSets_5AES_2.txt","w+");
     fpRAND = fopen("NumberSets_5RAND_2.txt","w+");
@@ -828,9 +718,9 @@ int main()
         }
 
         printf("After %d test...\n", i);
-        numero = 1;
-
+        
         //RANDOM case
+	numero = 1;
 
         res1 = subspaceTest(key, numero);
         tot1 += res1;
@@ -838,9 +728,8 @@ int main()
         average1 = tot1 / ((double) (i+1));
         average1 = average1 / ((double) N_TEST);
 
-        numero = 0;
-
         //AES case
+	numero = 0;
 
         res2 = subspaceTest(key, numero);
         tot2 += res2;
@@ -848,13 +737,13 @@ int main()
         average2 = tot2 / ((double) (i+1));
         average2 = average2 / ((double) N_TEST);
 
-        fprintf(fpRAND, "%lf --- %d: %lf - %lf \n", average1, i+1, res1, tot1);
+        fprintf(fpRAND, "Average: %lf --- Result %d test: %lf AND Total after %d test: %lf \n", average1, i+1, res1, i+1, tot1);
         fflush(fpRAND);
-        fprintf(fpAES, "%lf --- %d: %lf - %lf \n", average2, i+1, res2, tot2);
+        fprintf(fpAES, "Average: %lf --- Result %d test: %lf AND Total after %d test: %lf \n", average2, i+1, res2, i+1, tot2);
         fflush(fpAES);
 
-        printf("RAND --- %lf --- %d: %lf - %lf \n", average1, i+1, res1, tot1);
-        printf("AES --- %lf --- %d: %lf - %lf \n", average2, i+1, res2, tot2);
+        printf("RAND --- Average: %lf --- Result %d test: %lf AND Total after %d test: %lf \n", average1, i+1, res1, i+1, tot1);
+        printf("AES --- Average: %lf --- Result %d test: %lf AND Total after %d test: %lf \n", average2, i+1, res2, i+1, tot2);
     }
 
     fclose(fpAES);
